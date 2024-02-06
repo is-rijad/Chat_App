@@ -1,0 +1,34 @@
+.poruka, .korisnikova-poruka{
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  margin: 2%;
+}
+.poruka-korisnik, .korisnikova-poruka-korisnik {
+  width:20%;
+}
+.korisnikova-poruka-korisnik {
+  text-align: right;
+}
+.poruka-text, .korisnikova-poruka-text {
+  width: 80%;
+  height: fit-content;
+  resize: none;
+}
+#poruke {
+  height: 75vh;
+  overflow-y: scroll;
+}
+#slanje-poruke {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#poruka-input {
+  width: 78%;
+  height: 10vh;
+  resize: none;
+}
+#posalji-poruku {
+  width: 20%;
+}

@@ -1,0 +1,45 @@
+body {
+  padding: 0 0.5% 0 0.5%;
+}
+header {
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  background-color: mediumblue;
+}
+header h6 {
+  font-size: xxx-large;
+  font-weight: bolder;
+  font-family: "ui-rounded";
+  color: black;
+}
+#sidebar {
+  width: 30%;
+  background-color: #003569;
+  padding: 1%;
+  overflow: scroll;
+}
+#center-screen {
+  width: 70%;
+  background-color: dodgerblue;
+  padding: 1%;
+}
+#wrapper {
+  display: flex;
+  width: 100%;
+  height: 90vh;
+  justify-content: start;
+}
+.korisnik {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid white;
+  border-radius: 3px;
+  padding: 3%;
+  margin-bottom: 2%;
+}
+
+
