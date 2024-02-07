@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {RouterOutlet} from '@angular/router';
 import {RandomGenerator} from "../../servisi/random-generator";
 import {CookieService} from "ngx-cookie-service";
 import {Konstante} from "../../helperi/konstante";
@@ -7,11 +7,13 @@ import {PorukeComponent} from "../poruke/poruke.component";
 import {FormsModule} from "@angular/forms";
 import {SignalR} from "../../servisi/signalr";
 import {Poruka} from "../../modeli/privatna-poruka";
+import {NgIf} from "@angular/common";
+import {Alert, TipAlerta} from "../../modeli/alert";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, PorukeComponent, FormsModule],
+  imports: [RouterOutlet, PorukeComponent, FormsModule, NgIf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [
@@ -25,10 +27,10 @@ export class AppComponent implements OnInit{
   constructor(private randomGenerator:RandomGenerator,
               private cookieService:CookieService,
               private signalR:SignalR) {
-    this.signalR.konekcija.on(Konstante.korisnikSePridruzio, (poruka : Poruka) => {
-      if(poruka.odKorisnika != this.korisnickoIme) {
+    this.signalR.konekcija.on(Konstante.korisnikSePridruzio, async (poruka: Poruka) => {
+      if (poruka.odKorisnika != this.korisnickoIme) {
         this.aktivniKorisnici.push(poruka.odKorisnika!);
-        alert(`${poruka.sadrzaj}`);
+        Alert.alert = new Alert(TipAlerta.success, poruka.sadrzaj);
       }
     });
   }
@@ -36,4 +38,6 @@ export class AppComponent implements OnInit{
     this.korisnickoIme = this.randomGenerator.GenerisiString(6);
     this.cookieService.set(Konstante.korisnickoIme, this.korisnickoIme);
   }
+
+  protected readonly Alert = Alert;
 }
