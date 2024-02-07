@@ -9,16 +9,19 @@ import {SignalR} from "../../servisi/signalr";
 import {Poruka} from "../../modeli/privatna-poruka";
 import {NgForOf, NgIf} from "@angular/common";
 import {Alert, TipAlerta} from "../../modeli/alert";
+import {GetAktivneKorisnike} from "../../endpoints/getAktivneKorisnike";
+import {HttpClientModule} from "@angular/common/http";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, PorukeComponent, FormsModule, NgIf, NgForOf],
+  imports: [RouterOutlet, PorukeComponent, FormsModule, NgIf, NgForOf, HttpClientModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [
     RandomGenerator,
-    SignalR
+    SignalR,
+    GetAktivneKorisnike
   ]
 })
 export class AppComponent implements OnInit{
@@ -26,7 +29,8 @@ export class AppComponent implements OnInit{
   aktivniKorisnici : string[] = [];
   constructor(private randomGenerator:RandomGenerator,
               private cookieService:CookieService,
-              private signalR:SignalR) {
+              private signalR:SignalR,
+              private getAktivneKorisnike:GetAktivneKorisnike) {
     this.signalR.konekcija.on(Konstante.korisnikSePridruzio, async (poruka: Poruka) => {
       if (!this.aktivniKorisnici.find((k) => k == poruka.odKorisnika!) &&
           this.korisnickoIme != poruka.odKorisnika!) {
@@ -34,11 +38,21 @@ export class AppComponent implements OnInit{
         Alert.alert = new Alert(TipAlerta.success, poruka.sadrzaj);
       }
     });
+    this.signalR.konekcija.on(Konstante.korisnikSeOdjavio, async (poruka: Poruka) => {
+      if (this.aktivniKorisnici.find((k) => k == poruka.odKorisnika!) &&
+          this.korisnickoIme != poruka.odKorisnika!) {
+        delete this.aktivniKorisnici[this.aktivniKorisnici.findIndex((k) => k == this.korisnickoIme)]
+        Alert.alert = new Alert(TipAlerta.success, poruka.sadrzaj);
+      }
+    });
+
   }
   ngOnInit(): void {
     this.korisnickoIme = this.randomGenerator.GenerisiString(6);
     this.cookieService.set(Konstante.korisnickoIme, this.korisnickoIme);
-  }
+    window.onbeforeunload = () => {this.signalR.konekcija.invoke(Konstante.korisnikSeOdjavio)};
+    this.getAktivneKorisnike.get().subscribe((res) => this.aktivniKorisnici = res);
 
+  }
   protected readonly Alert = Alert;
 }

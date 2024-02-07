@@ -4,4 +4,5 @@ export class Konstante {
   public static readonly posaljiPoruku = "PosaljiPoruku";
   public static readonly primiPoruku = "PrimiPoruku";
   public static readonly korisnikSePridruzio = "KorisnikSePridruzio";
+  public static readonly korisnikSeOdjavio = "KorisnikSeOdjavio";
 }

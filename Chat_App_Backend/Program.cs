@@ -1,6 +1,16 @@
+using Chat_App_Backend.Data;
 using Chat_App_Backend.Endpointi;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var config = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", false)
+    .Build();
+
+
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseSqlServer(config.GetConnectionString("ChatAppDB")));
 
 // Add services to the container.
 
