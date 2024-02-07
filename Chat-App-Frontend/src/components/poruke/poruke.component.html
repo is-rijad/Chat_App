@@ -1,26 +1,6 @@
 <div id="poruke">
-  <div class="poruka">
-    <h2 class="poruka-korisnik">sadsadsad</h2>
-    <textarea readonly class="poruka-text">SAIDHASLKDJLKASJDKLSAJDKLASDJLASJ</textarea>
-  </div>
-  <div class="poruka">
-    <h2 class="poruka-korisnik">sadsadsad</h2>
-    <textarea class="poruka-text">SAIDHASLKDJLKASJDKLSAJDKLASDJLASJ</textarea>
-  </div>
-  <div class="poruka">
-    <h2 class="poruka-korisnik">sadsadsad</h2>
-    <textarea class="poruka-text">SAIDHASLKDJLKASJDKLSAJDKLASDJLASJ</textarea>
-  </div>
-  <div class="poruka">
-    <h2 class="poruka-korisnik">sadsadsad</h2>
-    <textarea class="poruka-text">SAIDHASLKDJLKASJDKLSAJDKLASDJLASJ</textarea>
-  </div>
-  <div class="korisnikova-poruka">
-    <textarea readonly class="korisnikova-poruka-text">SAIDHASLKDJLKASJDKLSAJDKLASDJLASJ</textarea>
-    <h2 class="korisnikova-poruka-korisnik">{{korisnickoIme}}</h2>
-  </div>
 </div>
 <div id="slanje-poruke">
   <textarea class="form-text" id="poruka-input"></textarea>
-  <button class="btn btn-primary" id="posalji-poruku">Pošalji</button>
+  <button (click)="posaljiPoruku()" disabled class="btn btn-primary" id="posalji-poruku">Pošalji</button>
 </div>
