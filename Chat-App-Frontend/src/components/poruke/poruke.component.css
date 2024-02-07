@@ -15,7 +15,7 @@
   height: fit-content;
   resize: none;
 }
-#poruke {
+#poruke-canvas {
   height: 75vh;
   overflow-y: scroll;
 }
