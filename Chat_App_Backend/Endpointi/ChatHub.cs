@@ -30,7 +30,7 @@ namespace Chat_App_Backend.Endpointi {
                 OdKorisnika = korisnik,
                 Sadrzaj = $"{korisnik} se pridružio grupnom chatu!"
             };
-            await Clients.All.SendAsync("KorisnikSePridruzio", poruka);
+            await Clients.Others.SendAsync("KorisnikSePridruzio", poruka);
         }
     }
 }

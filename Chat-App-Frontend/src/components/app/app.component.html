@@ -8,13 +8,15 @@
   </div>
   <div id="sidebar">
     <h3>Aktivni korisnici</h3>
-    <div id="aktivni-korisnici">
-      <div class="korisnik">
+    <div class="aktivni-korisnici">
+      <div  class="korisnik">
         <h2>{{korisnickoIme}}</h2>
         <h2>(Vi)</h2>
       </div>
+    </div>
+    <div *ngFor="let korisnik of aktivniKorisnici" class="aktivni-korisnici">
       <div class="korisnik">
-        <h2>IJSADAS</h2>
+        <h2>{{korisnik}}</h2>
         <button class="btn btn-primary">Privatna poruka</button>
       </div>
     </div>

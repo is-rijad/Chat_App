@@ -7,13 +7,13 @@ import {PorukeComponent} from "../poruke/poruke.component";
 import {FormsModule} from "@angular/forms";
 import {SignalR} from "../../servisi/signalr";
 import {Poruka} from "../../modeli/privatna-poruka";
-import {NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {Alert, TipAlerta} from "../../modeli/alert";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, PorukeComponent, FormsModule, NgIf],
+  imports: [RouterOutlet, PorukeComponent, FormsModule, NgIf, NgForOf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [
@@ -28,7 +28,8 @@ export class AppComponent implements OnInit{
               private cookieService:CookieService,
               private signalR:SignalR) {
     this.signalR.konekcija.on(Konstante.korisnikSePridruzio, async (poruka: Poruka) => {
-      if (poruka.odKorisnika != this.korisnickoIme) {
+      if (!this.aktivniKorisnici.find((k) => k == poruka.odKorisnika!) &&
+          this.korisnickoIme != poruka.odKorisnika!) {
         this.aktivniKorisnici.push(poruka.odKorisnika!);
         Alert.alert = new Alert(TipAlerta.success, poruka.sadrzaj);
       }
