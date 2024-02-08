@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chat_App_Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240208153635_korisnici")]
-    partial class korisnici
+    [Migration("20240208203237_dodane-poruke-i-korisnici")]
+    partial class dodaneporukeikorisnici
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,31 @@ namespace Chat_App_Backend.Migrations
                     b.HasKey("KonekcijaId");
 
                     b.ToTable("AktivniKorisnici");
+                });
+
+            modelBuilder.Entity("Chat_App_Backend.Modeli.Poruka", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("OdKorisnika")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sadrzaj")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZaKorisnika")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Poruke");
                 });
 #pragma warning restore 612, 618
         }

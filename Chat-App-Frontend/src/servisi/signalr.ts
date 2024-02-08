@@ -2,7 +2,7 @@ import * as signalR from "@microsoft/signalr"
 import {HubConnection} from "@microsoft/signalr"
 import {Injectable} from "@angular/core";
 import {Konstante} from "../helperi/konstante";
-import {Alert, TipAlerta} from "../modeli/alert";
+import {Alert, TipAlerta} from "../helperi/alert";
 
 @Injectable({providedIn:"root"})
 export class SignalR {

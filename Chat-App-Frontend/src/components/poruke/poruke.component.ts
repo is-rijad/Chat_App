@@ -4,6 +4,7 @@ import {Konstante} from "../../helperi/konstante";
 import {SignalR} from "../../servisi/signalr";
 import {Poruka} from "../../modeli/privatna-poruka";
 import {NgFor, NgForOf, NgIf} from "@angular/common";
+import {HubConnectionState} from "@microsoft/signalr";
 
 @Component({
   selector: 'app-poruke',
@@ -19,7 +20,7 @@ export class PorukeComponent implements OnInit, AfterViewChecked{
   korisnickoIme = "";
   poruke : Poruka[] = [];
   constructor(private cookieService:CookieService,
-              private signalR:SignalR) {
+              protected signalR:SignalR) {
   }
   ngOnInit() {
     this.korisnickoIme = this.cookieService.get(Konstante.korisnickoIme);
@@ -41,4 +42,6 @@ export class PorukeComponent implements OnInit, AfterViewChecked{
     document.getElementById("poruke-canvas")!.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
   }
+
+  protected readonly HubConnectionState = HubConnectionState;
 }
