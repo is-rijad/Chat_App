@@ -15,7 +15,7 @@ export class SignalR {
     await this.konekcija!.start().then(() => {
       (document.getElementById("posalji-poruku") as HTMLButtonElement).disabled = false;
     }).catch(async (err) => {
-      Alert.alert = new Alert("Greška na serveru!\n" + err.error + "\nPonovni pokušaj za 3 sekunde!", TipAlerta.error, 3000);
+      Alert.alert = new Alert(TipAlerta.error, `Greška na serveru! Ponovni pokušaj za 3 sekunde!`, 3000);
       await new Promise(f => setTimeout(f, 3000));
       location.reload();
     })

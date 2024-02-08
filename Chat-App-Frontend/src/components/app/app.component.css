@@ -8,26 +8,26 @@ header {
   align-items: center;
   justify-content: center;
   border-radius: 5px;
-  background-color: mediumblue;
+  background-color: #3640ea;
 }
 header h6 {
   font-size: xxx-large;
   font-weight: bolder;
-  font-family: "ui-rounded";
-  color: black;
+  font-family: "Arial Rounded MT Bold";
+  color: #9b9a9a;
 }
 #sidebar h3 {
   display: block;
 }
 #sidebar {
   width: 30%;
-  background-color: #003569;
+  background-color: #0074c7;
   padding: 1%;
   overflow: scroll;
 }
 #center-screen {
   width: 70%;
-  background-color: dodgerblue;
+  background-color: #9b9a9a;
   padding: 1%;
 }
 #wrapper {

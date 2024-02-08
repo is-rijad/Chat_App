@@ -1,7 +1,7 @@
 .poruka, .korisnikova-poruka{
   display: flex;
   justify-content: space-between;
-  align-content: center;
+  align-items: center;
   margin: 2%;
 }
 .poruka-korisnik, .korisnikova-poruka-korisnik {
@@ -14,6 +14,9 @@
   width: 80%;
   height: 10vh;
   resize: none;
+  border-radius: 10px;
+  padding: 5px;
+
 }
 #poruke-canvas {
   height: 75vh;
@@ -23,6 +26,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-radius: 20px;
 }
 #poruka-input {
   width: 78%;
