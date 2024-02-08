@@ -5,7 +5,7 @@
 namespace Chat_App_Backend.Migrations
 {
     /// <inheritdoc />
-    public partial class dodaniaktivnikorisnici : Migration
+    public partial class korisnici : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,13 +14,12 @@ namespace Chat_App_Backend.Migrations
                 name: "AktivniKorisnici",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    KonekcijaId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     KorisnickoIme = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AktivniKorisnici", x => x.Id);
+                    table.PrimaryKey("PK_AktivniKorisnici", x => x.KonekcijaId);
                 });
         }
 

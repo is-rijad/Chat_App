@@ -12,7 +12,7 @@
 }
 .poruka-text, .korisnikova-poruka-text {
   width: 80%;
-  height: fit-content;
+  height: 10vh;
   resize: none;
 }
 #poruke-canvas {

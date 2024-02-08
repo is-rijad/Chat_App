@@ -25,41 +25,50 @@ namespace Chat_App_Backend.Endpointi {
             await Clients.All.SendAsync("PrimiPoruku", poruka);
         }
 
-        public async Task KorisnikSePridruzio()
+        public override async Task OnConnectedAsync()
         {
-            var korisnik = _httpContextAccessor.HttpContext!.Request.Cookies[Konstante.KorisnickoIme];
-            if (korisnik == null)
-            {
+            var korisnickoIme = _httpContextAccessor.HttpContext!.Request.Cookies[Konstante.KorisnickoIme];
+            var konekcijaId = Context.ConnectionId;
+            
+            if (korisnickoIme == null) {
                 throw new Exception("Greska! Korisnik ne postoji!");
             }
 
             var poruka = new Poruka()
             {
-                OdKorisnika = korisnik,
-                Sadrzaj = $"{korisnik} se pridružio grupnom chatu!"
+                OdKorisnika = korisnickoIme,
+                Sadrzaj = $"{korisnickoIme} se pridružio grupnom chatu!"
             };
-            if (await _dataContext.AktivniKorisnici.FirstOrDefaultAsync(k => k.KorisnickoIme == korisnik) == null)
+            await _dataContext.AktivniKorisnici.AddAsync(new Korisnik()
             {
-                await _dataContext.AktivniKorisnici.AddAsync(new Korisnik() { KorisnickoIme = korisnik });
-                await _dataContext.SaveChangesAsync();
-            }
+                KorisnickoIme = korisnickoIme,
+                KonekcijaId = konekcijaId
+            });
+            await _dataContext.SaveChangesAsync();
 
             await Clients.Others.SendAsync("KorisnikSePridruzio", poruka);
+            await base.OnConnectedAsync();
         }
-        public async Task KorisnikSeOdjavio() {
-            var korisnik = _httpContextAccessor.HttpContext!.Request.Cookies[Konstante.KorisnickoIme];
-            if (korisnik == null) {
+
+        public override async Task OnDisconnectedAsync(Exception? exception)
+        {
+            var korisnickoIme = _httpContextAccessor.HttpContext!.Request.Cookies[Konstante.KorisnickoIme];
+            var konekcijaId = Context.ConnectionId;
+            if (korisnickoIme == null) {
                 throw new Exception("Greska! Korisnik ne postoji!");
             }
 
             var poruka = new Poruka()
             {
-                OdKorisnika = korisnik,
-                Sadrzaj = $"{korisnik} izašao iz grupnog chata!"
+                OdKorisnika = korisnickoIme,
+                Sadrzaj = $"{korisnickoIme} izašao iz grupnog chata!"
             };
-            _dataContext.AktivniKorisnici.Remove(await _dataContext.AktivniKorisnici.FirstOrDefaultAsync(k => k.KorisnickoIme == korisnik));
+            var korisnikObjekat =
+                await _dataContext.AktivniKorisnici.FirstOrDefaultAsync(k => k.KonekcijaId == konekcijaId);
+            _dataContext.AktivniKorisnici.Remove(korisnikObjekat);
             await _dataContext.SaveChangesAsync();
             await Clients.Others.SendAsync("KorisnikSeOdjavio", poruka);
+            await base.OnDisconnectedAsync(exception);
         }
     }
 }

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chat_App_Backend.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240207170758_dodani-aktivni-korisnici")]
-    partial class dodaniaktivnikorisnici
+    [Migration("20240208153635_korisnici")]
+    partial class korisnici
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,17 +26,14 @@ namespace Chat_App_Backend.Migrations
 
             modelBuilder.Entity("Chat_App_Backend.Modeli.Korisnik", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("KonekcijaId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("KorisnickoIme")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("KonekcijaId");
 
                     b.ToTable("AktivniKorisnici");
                 });

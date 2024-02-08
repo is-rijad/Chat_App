@@ -23,17 +23,14 @@ namespace Chat_App_Backend.Migrations
 
             modelBuilder.Entity("Chat_App_Backend.Modeli.Korisnik", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("KonekcijaId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("KorisnickoIme")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("KonekcijaId");
 
                     b.ToTable("AktivniKorisnici");
                 });

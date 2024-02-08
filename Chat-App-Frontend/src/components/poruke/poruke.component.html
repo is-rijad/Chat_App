@@ -1,11 +1,11 @@
 <div id="poruke-canvas">
   <div *ngFor="let poruka of poruke" id="poruke">
     <div *ngIf="korisnickoIme == poruka.odKorisnika" class="korisnikova-poruka">
-      <textarea readonly class="korisnikova-poruka-text">{{poruka.sadrzaj}}</textarea>
+      <textarea readonly class="p-text korisnikova-poruka-text">{{poruka.sadrzaj}}</textarea>
       <h2 class="korisnikova-poruka-korisnik">{{poruka.odKorisnika}}</h2>
     </div>
     <div *ngIf="korisnickoIme != poruka.odKorisnika" class="poruka">
-      <h2 class="poruka-korisnik">{{poruka.odKorisnika}}</h2>
+      <h2 class="p-text poruka-korisnik">{{poruka.odKorisnika}}</h2>
       <textarea readonly class="poruka-text">{{poruka.sadrzaj}}</textarea>
     </div>
   </div>

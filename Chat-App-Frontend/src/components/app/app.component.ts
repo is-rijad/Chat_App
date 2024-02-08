@@ -20,7 +20,6 @@ import {HttpClientModule} from "@angular/common/http";
   styleUrl: './app.component.css',
   providers: [
     RandomGenerator,
-    SignalR,
     GetAktivneKorisnike
   ]
 })
@@ -32,25 +31,21 @@ export class AppComponent implements OnInit{
               private signalR:SignalR,
               private getAktivneKorisnike:GetAktivneKorisnike) {
     this.signalR.konekcija.on(Konstante.korisnikSePridruzio, async (poruka: Poruka) => {
-      if (!this.aktivniKorisnici.find((k) => k == poruka.odKorisnika!) &&
-          this.korisnickoIme != poruka.odKorisnika!) {
-        this.aktivniKorisnici.push(poruka.odKorisnika!);
+      this.aktivniKorisnici.push(poruka.odKorisnika!);
         Alert.alert = new Alert(TipAlerta.success, poruka.sadrzaj);
-      }
     });
     this.signalR.konekcija.on(Konstante.korisnikSeOdjavio, async (poruka: Poruka) => {
-      if (this.aktivniKorisnici.find((k) => k == poruka.odKorisnika!) &&
-          this.korisnickoIme != poruka.odKorisnika!) {
-        delete this.aktivniKorisnici[this.aktivniKorisnici.findIndex((k) => k == this.korisnickoIme)]
+        let index = this.aktivniKorisnici.findIndex((k) => k == this.korisnickoIme);
+        this.aktivniKorisnici.splice(index, 1);
         Alert.alert = new Alert(TipAlerta.success, poruka.sadrzaj);
-      }
     });
+    this.signalR.konektujSe();
 
   }
   ngOnInit(): void {
     this.korisnickoIme = this.randomGenerator.GenerisiString(6);
     this.cookieService.set(Konstante.korisnickoIme, this.korisnickoIme);
-    window.onbeforeunload = () => {this.signalR.konekcija.invoke(Konstante.korisnikSeOdjavio)};
+    window.onbeforeunload = () => {this.signalR.konekcija.stop()};
     this.getAktivneKorisnike.get().subscribe((res) => this.aktivniKorisnici = res);
 
   }

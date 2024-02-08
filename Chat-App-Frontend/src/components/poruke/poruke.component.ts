@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, OnInit} from '@angular/core';
 import {CookieService} from "ngx-cookie-service";
 import {Konstante} from "../../helperi/konstante";
 import {SignalR} from "../../servisi/signalr";
 import {Poruka} from "../../modeli/privatna-poruka";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgFor, NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-poruke',
@@ -13,12 +13,9 @@ import {NgForOf, NgIf} from "@angular/common";
     NgForOf
   ],
   templateUrl: './poruke.component.html',
-  styleUrl: './poruke.component.css',
-  providers: [
-    SignalR
-  ]
+  styleUrl: './poruke.component.css'
 })
-export class PorukeComponent implements OnInit{
+export class PorukeComponent implements OnInit, AfterViewChecked{
   korisnickoIme = "";
   poruke : Poruka[] = [];
   constructor(private cookieService:CookieService,
@@ -26,7 +23,9 @@ export class PorukeComponent implements OnInit{
   }
   ngOnInit() {
     this.korisnickoIme = this.cookieService.get(Konstante.korisnickoIme);
-    this.signalR.konekcija.on(Konstante.primiPoruku, (poruka) => this.poruke.push(poruka))
+    this.signalR.konekcija.on(Konstante.primiPoruku, (poruka) => {
+      this.poruke.push(poruka);
+    })
   }
 
   posaljiPoruku() {
@@ -36,5 +35,10 @@ export class PorukeComponent implements OnInit{
       sadrzaj: (document.getElementById("poruka-input") as HTMLInputElement).value
     }
     this.signalR.konekcija.invoke(Konstante.posaljiPoruku, poruka)
+  }
+
+  ngAfterViewChecked(): void {
+    document.getElementById("poruke-canvas")!.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
   }
 }

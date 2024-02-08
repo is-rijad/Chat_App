@@ -5,8 +5,9 @@ namespace Chat_App_Backend.Modeli {
     [Table("AktivniKorisnici")]
     public class Korisnik {
         [Key]
-        public int Id { get; set; }
+        public string KonekcijaId { get; set; }
         [Required]
         public string KorisnickoIme { get; set; }
+
     }
 }
