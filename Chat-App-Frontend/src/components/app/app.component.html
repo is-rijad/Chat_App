@@ -3,10 +3,11 @@
   <h6>Chat App</h6>
 </header>
 <div id="wrapper">
-  <div *ngIf="Alert.alert.aktivan" id="alert" class="alert alert-{{Alert.alert.tip}}" style="width: 20%; position: absolute; top: 10%; left: 40%">
+  <div *ngIf="Alert.alert.aktivan" id="alert" class="alert alert-{{Alert.alert.tip}}">
     {{Alert.alert.sadrzaj}}
   </div>
   <div id="sidebar">
+    <div (click)="hamburgerHandler()" id="hamburger"><img src="/assets/HamburgerIcon.png" alt="HamburgerIcon"></div>
     <h3>Aktivni korisnici</h3>
     <div class="aktivni-korisnici">
       <div  class="korisnik">

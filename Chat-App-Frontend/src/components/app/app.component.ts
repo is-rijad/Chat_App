@@ -26,6 +26,7 @@ import {HttpClientModule} from "@angular/common/http";
 export class AppComponent implements OnInit{
   korisnickoIme = "";
   aktivniKorisnici : string[] = [];
+  hamburgerOtvoren = false;
   constructor(private randomGenerator:RandomGenerator,
               private cookieService:CookieService,
               private signalR:SignalR,
@@ -47,6 +48,17 @@ export class AppComponent implements OnInit{
     this.cookieService.set(Konstante.korisnickoIme, this.korisnickoIme);
     window.onbeforeunload = () => {this.signalR.konekcija.stop()};
     this.getAktivneKorisnike.get().subscribe((res) => this.aktivniKorisnici = res);
+  }
+
+  hamburgerHandler() {
+    let div = document.getElementById("sidebar");
+    if(this.hamburgerOtvoren) {
+      div!.style.maxHeight = "60px";
+    }
+    else {
+      div!.style.maxHeight = "90vh";
+    }
+    this.hamburgerOtvoren = !this.hamburgerOtvoren;
 
   }
   protected readonly Alert = Alert;
