@@ -4,7 +4,7 @@ import {Injectable} from "@angular/core";
 import {Korisnik} from "../modeli/korisnik";
 
 @Injectable()
-export class GetAktivneKorisnike {
+export class AktivniKorisniciEndpoint {
     constructor(private httpClient:HttpClient) {
     }
     get() {

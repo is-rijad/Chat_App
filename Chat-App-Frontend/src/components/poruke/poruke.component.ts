@@ -1,10 +1,9 @@
-import { AfterViewChecked, AfterViewInit, Component, OnInit } from '@angular/core';
-import { CookieService } from "ngx-cookie-service";
+import { AfterViewChecked, Component, OnInit } from '@angular/core';
 import { Konstante } from "../../helperi/konstante";
 import { SignalR } from "../../servisi/signalr";
-import { Poruka } from "../../modeli/privatna-poruka";
-import { NgFor, NgForOf, NgIf } from "@angular/common";
+import { NgForOf, NgIf } from "@angular/common";
 import { HubConnectionState } from "@microsoft/signalr";
+import {PorukeEndpoint} from "../../endpoints/poruke-endpoint";
 
 @Component({
   selector: 'app-poruke',
@@ -16,24 +15,37 @@ import { HubConnectionState } from "@microsoft/signalr";
   templateUrl: './poruke.component.html',
   styleUrl: './poruke.component.css'
 })
-export class PorukeComponent implements OnInit, AfterViewChecked {
-  poruke: Poruka[] = [];
-  constructor(protected signalR: SignalR) {
-  }
-  ngOnInit() {
-    this.signalR.konekcija.on(Konstante.primiPoruku, (poruka) => {
-      this.poruke.push(poruka);
-    })
+export class PorukeComponent implements AfterViewChecked {
+  constructor(protected signalR: SignalR,
+              private porukeEndpoint:PorukeEndpoint) {
+
   }
 
   posaljiPoruku() {
-    let sadrzaj = (document.getElementById("poruka-input") as HTMLInputElement).value
-    this.signalR.konekcija.invoke(Konstante.posaljiPoruku, sadrzaj)
+    let sadrzaj = "";
+    if(this.signalR.privatniChatOtvoren) {
+      sadrzaj = (document.getElementById("priv-poruka-input") as HTMLInputElement).value
+      if(sadrzaj != "") {
+        this.signalR.konekcija.invoke(Konstante.posaljiPoruku, sadrzaj, this.signalR.imeGrupe);
+        (document.getElementById("priv-poruka-input") as HTMLInputElement).value = "";
+      }
+    }
+    else {
+      sadrzaj = (document.getElementById("poruka-input") as HTMLInputElement).value
+      if (sadrzaj != "") {
+          this.porukeEndpoint.dodajPoruku({
+            odKorisnika: this.signalR.korisnickoIme,
+            sadrzaj: sadrzaj
+          });
+        this.signalR.konekcija.invoke(Konstante.posaljiPoruku, sadrzaj, null);
+        (document.getElementById("poruka-input") as HTMLInputElement).value = ""
+      }
+    }
   }
 
   ngAfterViewChecked(): void {
-    document.getElementById("poruke-canvas")!.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-
+    document.getElementById("poruke-canvas")?.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    document.getElementById("priv-poruke-canvas")?.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'end' });
   }
 
   protected readonly HubConnectionState = HubConnectionState;

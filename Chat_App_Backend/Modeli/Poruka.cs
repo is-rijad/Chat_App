@@ -8,7 +8,6 @@ namespace Chat_App_Backend.Modeli {
         public int Id { get; set; }
         [Required]
         public string OdKorisnika { get; set; }
-        public string ZaKorisnika { get; set; } = null!;
         [Required]
         public string Sadrzaj { get; set; }
     }
