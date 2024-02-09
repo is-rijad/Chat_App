@@ -4,11 +4,11 @@ import { Injectable } from "@angular/core";
 import { Konstante } from "../helperi/konstante";
 import { Alert, TipAlerta } from "../helperi/alert";
 import { RandomGenerator } from "./random-generator";
-import {Router} from "@angular/router";
-import {Poruka} from "../modeli/privatna-poruka";
+import {PorukeEndpoint} from "../endpoints/poruke-endpoint";
+import {Poruka} from "../modeli/poruka";
 
 
-@Injectable({ providedIn: "root" })
+@Injectable({ providedIn: "root"})
 export class SignalR {
   konektovanjeAktivno;
   korisnickoIme;
@@ -20,7 +20,7 @@ export class SignalR {
   privatnePoruke : Poruka[];
   poruke : Poruka[];
 
-  constructor(private router:Router) {
+  constructor(private porukeEndpoint:PorukeEndpoint) {
     this.privatnePoruke = [];
     this.poruke = [];
     this.konekcijaIdPrivatnog = "";
@@ -52,6 +52,7 @@ export class SignalR {
   }
   public async konektujSe() {
     await this.konekcija!.start().then(() => {
+      this.porukeEndpoint.getPoruke().subscribe((res) => this.poruke = res);
       (document.getElementById("posalji-poruku") as HTMLButtonElement).disabled = false;
       this.konektovanjeAktivno = false;
     }).catch(async (err) => {

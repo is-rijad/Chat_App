@@ -1,10 +1,9 @@
-import { AfterViewChecked, AfterViewInit, Component, OnInit } from '@angular/core';
-import { CookieService } from "ngx-cookie-service";
+import { AfterViewChecked, Component, OnInit } from '@angular/core';
 import { Konstante } from "../../helperi/konstante";
 import { SignalR } from "../../servisi/signalr";
-import { Poruka } from "../../modeli/privatna-poruka";
-import { NgFor, NgForOf, NgIf } from "@angular/common";
+import { NgForOf, NgIf } from "@angular/common";
 import { HubConnectionState } from "@microsoft/signalr";
+import {PorukeEndpoint} from "../../endpoints/poruke-endpoint";
 
 @Component({
   selector: 'app-poruke',
@@ -17,17 +16,30 @@ import { HubConnectionState } from "@microsoft/signalr";
   styleUrl: './poruke.component.css'
 })
 export class PorukeComponent implements AfterViewChecked {
-  constructor(protected signalR: SignalR) {
+  constructor(protected signalR: SignalR,
+              private porukeEndpoint:PorukeEndpoint) {
+
   }
 
   posaljiPoruku() {
+    let sadrzaj = "";
     if(this.signalR.privatniChatOtvoren) {
-      let sadrzaj = (document.getElementById("priv-poruka-input") as HTMLInputElement).value
-      this.signalR.konekcija.invoke(Konstante.posaljiPoruku, sadrzaj, this.signalR.imeGrupe);
+      sadrzaj = (document.getElementById("priv-poruka-input") as HTMLInputElement).value
+      if(sadrzaj != "") {
+        this.signalR.konekcija.invoke(Konstante.posaljiPoruku, sadrzaj, this.signalR.imeGrupe);
+        (document.getElementById("priv-poruka-input") as HTMLInputElement).value = "";
+      }
     }
     else {
-      let sadrzaj = (document.getElementById("poruka-input") as HTMLInputElement).value
-      this.signalR.konekcija.invoke(Konstante.posaljiPoruku, sadrzaj, null)
+      sadrzaj = (document.getElementById("poruka-input") as HTMLInputElement).value
+      if (sadrzaj != "") {
+          this.porukeEndpoint.dodajPoruku({
+            odKorisnika: this.signalR.korisnickoIme,
+            sadrzaj: sadrzaj
+          });
+        this.signalR.konekcija.invoke(Konstante.posaljiPoruku, sadrzaj, null);
+        (document.getElementById("poruka-input") as HTMLInputElement).value = ""
+      }
     }
   }
 

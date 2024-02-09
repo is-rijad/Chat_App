@@ -6,7 +6,7 @@ import {FormsModule} from "@angular/forms";
 import {SignalR} from "../../servisi/signalr";
 import {NgForOf, NgIf} from "@angular/common";
 import {Alert, TipAlerta} from "../../helperi/alert";
-import {GetAktivneKorisnike} from "../../endpoints/getAktivneKorisnike";
+import {AktivniKorisniciEndpoint} from "../../endpoints/aktivni-korisnici-endpoint";
 import {HttpClientModule} from "@angular/common/http";
 import {Korisnik} from "../../modeli/korisnik";
 import {HubConnectionState} from "@microsoft/signalr";
@@ -19,7 +19,7 @@ import {CookieService} from "ngx-cookie-service";
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [
-    GetAktivneKorisnike
+    AktivniKorisniciEndpoint
   ]
 })
 export class AppComponent implements OnInit{
@@ -29,7 +29,7 @@ export class AppComponent implements OnInit{
   aktivniKorisnici : Korisnik[] = [];
   hamburgerOtvoren = false;
   constructor(protected signalR:SignalR,
-              private getAktivneKorisnike:GetAktivneKorisnike) {
+              private getAktivneKorisnike:AktivniKorisniciEndpoint) {
     this.signalR.konekcija.on(Konstante.korisnikSePridruzio,  (korisnik: Korisnik, poruka: string) => {
       this.aktivniKorisnici.push(korisnik);
         Alert.alert = new Alert(TipAlerta.success, poruka);
