@@ -1,7 +1,10 @@
-export class RandomGenerator {
-  private static readonly randomSlova = "qwertzuioplkjhgfdsayxcvbnmQWERTZUIOPLKJHGFDSAYXCVBNM";
+import {Injectable} from "@angular/core";
 
-  public static GenerisiString(velicina : number) : string {
+@Injectable()
+export class RandomGenerator {
+  private readonly randomSlova = "qwertzuioplkjhgfdsayxcvbnmQWERTZUIOPLKJHGFDSAYXCVBNM";
+
+  public GenerisiString(velicina : number) : string {
     let randomString = "";
     for (let i = 0; i < velicina; i++) {
       let randomIndex = Math.floor(Math.random() * this.randomSlova.length);

@@ -16,23 +16,25 @@ import {NgFor, NgForOf, NgIf} from "@angular/common";
   styleUrl: './poruke.component.css'
 })
 export class PorukeComponent implements OnInit, AfterViewChecked{
+  korisnickoIme = "";
   poruke : Poruka[] = [];
-<<<<<<< Updated upstream
   constructor(private cookieService:CookieService,
               private signalR:SignalR) {
-=======
-  constructor(protected signalR:SignalR) {
->>>>>>> Stashed changes
   }
   ngOnInit() {
+    this.korisnickoIme = this.cookieService.get(Konstante.korisnickoIme);
     this.signalR.konekcija.on(Konstante.primiPoruku, (poruka) => {
       this.poruke.push(poruka);
     })
   }
 
   posaljiPoruku() {
-    let sadrzaj  = (document.getElementById("poruka-input") as HTMLInputElement).value
-    this.signalR.konekcija.invoke(Konstante.posaljiPoruku, sadrzaj)
+    let poruka : Poruka = {
+      odKorisnika: null,
+      zaKorisnika: null,
+      sadrzaj: (document.getElementById("poruka-input") as HTMLInputElement).value
+    }
+    this.signalR.konekcija.invoke(Konstante.posaljiPoruku, poruka)
   }
 
   ngAfterViewChecked(): void {
