@@ -1,15 +1,12 @@
 import * as signalR from "@microsoft/signalr"
-import {HubConnection} from "@microsoft/signalr"
-import {Injectable} from "@angular/core";
-import {Konstante} from "../helperi/konstante";
-<<<<<<< Updated upstream
-import {Alert, TipAlerta} from "../modeli/alert";
-=======
-import {Alert, TipAlerta} from "../helperi/alert";
-import {RandomGenerator} from "./random-generator";
->>>>>>> Stashed changes
+import { HubConnection } from "@microsoft/signalr"
+import { Injectable } from "@angular/core";
+import { Konstante } from "../helperi/konstante";
+import { Alert, TipAlerta } from "../helperi/alert";
+import { RandomGenerator } from "./random-generator";
 
-@Injectable({providedIn:"root"})
+
+@Injectable({ providedIn: "root" })
 export class SignalR {
   konektovanjeAktivno;
   korisnickoIme;

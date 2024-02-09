@@ -45,14 +45,15 @@ namespace Chat_App_Backend.Endpointi {
                 OdKorisnika = korisnickoIme,
                 Sadrzaj = $"{korisnickoIme} se pridružio grupnom chatu!"
             };
-            await _dataContext.AktivniKorisnici.AddAsync(new Korisnik()
+            var korisnik = new Korisnik()
             {
                 KorisnickoIme = korisnickoIme,
                 KonekcijaId = konekcijaId
-            });
+            };
+            await _dataContext.AktivniKorisnici.AddAsync(korisnik);
             await _dataContext.SaveChangesAsync();
 
-            await Clients.Others.SendAsync("KorisnikSePridruzio", poruka);
+            await Clients.Others.SendAsync("KorisnikSePridruzio",korisnik, poruka);
             await base.OnConnectedAsync();
         }
 
@@ -67,17 +68,15 @@ namespace Chat_App_Backend.Endpointi {
             var poruka = new Poruka()
             {
                 OdKorisnika = korisnickoIme,
-                Sadrzaj = $"{korisnickoIme} izašao iz grupnog chata!"
+                Sadrzaj = $"{korisnickoIme} je izašao iz grupnog chata!"
             };
             var korisnikObjekat =
                 await _dataContext.AktivniKorisnici.FirstOrDefaultAsync(k => k.KonekcijaId == konekcijaId);
             _dataContext.AktivniKorisnici.Remove(korisnikObjekat);
             await _dataContext.SaveChangesAsync();
-            await Clients.Others.SendAsync("KorisnikSeOdjavio", poruka);
+            await Clients.Others.SendAsync("KorisnikSeOdjavio", korisnikObjekat, poruka);
             await base.OnDisconnectedAsync(exception);
         }
-<<<<<<< Updated upstream
-=======
 
         public async Task<string> ZapocniPrivatniChat(string konekcijaId)
         {
@@ -96,6 +95,5 @@ namespace Chat_App_Backend.Endpointi {
             await Groups.AddToGroupAsync(konekcijaId, imeGrupe);
             return saKorisnikom;
         }
->>>>>>> Stashed changes
     }
 }

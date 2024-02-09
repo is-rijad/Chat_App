@@ -12,6 +12,6 @@
 </div>
 <div id="slanje-poruke">
   <textarea class="form-text" id="poruka-input"></textarea>
-  <button (click)="posaljiPoruku()" disabled class="btn btn-primary" id="posalji-poruku">Pošalji</button>
+  <button (click)="posaljiPoruku()" [disabled]="signalR.konekcija.state != HubConnectionState.Connected" class="btn btn-primary" id="posalji-poruku">Pošalji</button>
 </div>
 
