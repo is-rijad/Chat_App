@@ -15,19 +15,25 @@ namespace Chat_App_Backend.Endpointi {
             _httpContextAccessor = httpContextAccessor;
             _dataContext = context;
         }
-        public async Task PosaljiPoruku(Poruka poruka)
+        public async Task PosaljiPoruku(string sadrzaj)
         {
-            poruka.OdKorisnika = _httpContextAccessor.HttpContext!.Request.Cookies[Konstante.KorisnickoIme];
-            if (poruka.OdKorisnika == null)
+            var poslaoKorisnik = _httpContextAccessor.HttpContext!.Request.Query[Konstante.KorisnickoIme][0];
+            if (poslaoKorisnik == null)
             {
                 throw new Exception("Greska! Korisnik ne postoji!");
             }
+
+            var poruka = new Poruka()
+            {
+                OdKorisnika = poslaoKorisnik,
+                Sadrzaj = sadrzaj
+            };
             await Clients.All.SendAsync("PrimiPoruku", poruka);
         }
 
         public override async Task OnConnectedAsync()
         {
-            var korisnickoIme = _httpContextAccessor.HttpContext!.Request.Cookies[Konstante.KorisnickoIme];
+            var korisnickoIme = _httpContextAccessor.HttpContext!.Request.Query[Konstante.KorisnickoIme][0];
             var konekcijaId = Context.ConnectionId;
             
             if (korisnickoIme == null) {
@@ -52,7 +58,7 @@ namespace Chat_App_Backend.Endpointi {
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            var korisnickoIme = _httpContextAccessor.HttpContext!.Request.Cookies[Konstante.KorisnickoIme];
+            var korisnickoIme = _httpContextAccessor.HttpContext!.Request.Query[Konstante.KorisnickoIme][0];
             var konekcijaId = Context.ConnectionId;
             if (korisnickoIme == null) {
                 throw new Exception("Greska! Korisnik ne postoji!");
@@ -70,5 +76,26 @@ namespace Chat_App_Backend.Endpointi {
             await Clients.Others.SendAsync("KorisnikSeOdjavio", poruka);
             await base.OnDisconnectedAsync(exception);
         }
+<<<<<<< Updated upstream
+=======
+
+        public async Task<string> ZapocniPrivatniChat(string konekcijaId)
+        {
+            var konekcijaIdZapoceo = Context.ConnectionId;
+            var zapoceoKorisnik = (await
+                _dataContext.AktivniKorisnici.FirstOrDefaultAsync(ak => ak.KonekcijaId == konekcijaIdZapoceo))?.KorisnickoIme;
+            var saKorisnikom = (await
+                _dataContext.AktivniKorisnici.FirstOrDefaultAsync(ak => ak.KonekcijaId == konekcijaId))?.KorisnickoIme;
+            if (zapoceoKorisnik == null)
+                throw new Exception("Niste konektovani");
+            if (saKorisnikom == null)
+                throw new Exception("Korisnik nije konektovan");
+            await Clients.Client(konekcijaId).SendAsync("ZapoceoPrivatniChat", zapoceoKorisnik);
+            var imeGrupe = zapoceoKorisnik + saKorisnikom;
+            await Groups.AddToGroupAsync(konekcijaIdZapoceo, imeGrupe);
+            await Groups.AddToGroupAsync(konekcijaId, imeGrupe);
+            return saKorisnikom;
+        }
+>>>>>>> Stashed changes
     }
 }

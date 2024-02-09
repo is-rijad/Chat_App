@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {RandomGenerator} from "../../servisi/random-generator";
-import {CookieService} from "ngx-cookie-service";
 import {Konstante} from "../../helperi/konstante";
 import {PorukeComponent} from "../poruke/poruke.component";
 import {FormsModule} from "@angular/forms";
@@ -19,17 +17,24 @@ import {HttpClientModule} from "@angular/common/http";
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers: [
-    RandomGenerator,
     GetAktivneKorisnike
   ]
 })
 export class AppComponent implements OnInit{
+<<<<<<< Updated upstream
   korisnickoIme = "";
   aktivniKorisnici : string[] = [];
   hamburgerOtvoren = false;
   constructor(private randomGenerator:RandomGenerator,
               private cookieService:CookieService,
               private signalR:SignalR,
+=======
+  aktivniKorisnici : Korisnik[] = [];
+  hamburgerOtvoren = false;
+  privatniChatOtvoren = false;
+  dialogTitle = "";
+  constructor(protected signalR:SignalR,
+>>>>>>> Stashed changes
               private getAktivneKorisnike:GetAktivneKorisnike) {
     this.signalR.konekcija.on(Konstante.korisnikSePridruzio, async (poruka: Poruka) => {
       this.aktivniKorisnici.push(poruka.odKorisnika!);
@@ -44,9 +49,16 @@ export class AppComponent implements OnInit{
 
   }
   ngOnInit(): void {
-    this.korisnickoIme = this.randomGenerator.GenerisiString(6);
-    this.cookieService.set(Konstante.korisnickoIme, this.korisnickoIme);
-    window.onbeforeunload = () => {this.signalR.konekcija.stop()};
+    window.onbeforeunload = () => {
+      if(this.signalR.konektovanjeAktivno) {
+        Alert.alert = new Alert(TipAlerta.error, "Morate sačekati uspostavljanje konekcije kako biste izašli!");
+        return false;
+      }
+      this.signalR.konekcija.stop().then(() => {
+        return true;
+      })
+      return false;
+    };
     this.getAktivneKorisnike.get().subscribe((res) => this.aktivniKorisnici = res);
   }
 
