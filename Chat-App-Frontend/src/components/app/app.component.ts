@@ -23,22 +23,11 @@ import {HubConnectionState} from "@microsoft/signalr";
   ]
 })
 export class AppComponent implements OnInit{
-<<<<<<< Updated upstream
-  korisnickoIme = "";
-  aktivniKorisnici : Korisnik[] = [];
-  hamburgerOtvoren = false;
-  privatniChatOtvoren = false;
-  dialogTitle = "";
-  constructor(private randomGenerator:RandomGenerator,
-              private cookieService:CookieService,
-              private signalR:SignalR,
-=======
   aktivniKorisnici : Korisnik[] = [];
   hamburgerOtvoren = false;
   privatniChatOtvoren = false;
   dialogTitle = "";
   constructor(protected signalR:SignalR,
->>>>>>> Stashed changes
               private getAktivneKorisnike:GetAktivneKorisnike) {
     this.signalR.konekcija.on(Konstante.korisnikSePridruzio,  (korisnik: Korisnik, poruka: Poruka) => {
       this.aktivniKorisnici.push(korisnik);

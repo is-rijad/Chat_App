@@ -5,6 +5,7 @@ import { Konstante } from "../helperi/konstante";
 import { Alert, TipAlerta } from "../helperi/alert";
 import { RandomGenerator } from "./random-generator";
 
+
 @Injectable({ providedIn: "root" })
 export class SignalR {
   konektovanjeAktivno;
