@@ -1,5 +1,6 @@
+<div *ngIf="!signalR.privatniChatOtvoren">
 <div id="poruke-canvas">
-  <div *ngFor="let poruka of poruke" id="poruke">
+  <div *ngFor="let poruka of signalR.poruke" id="poruke">
     <div *ngIf="signalR.korisnickoIme == poruka.odKorisnika" class="korisnikova-poruka">
       <textarea readonly class="p-text korisnikova-poruka-text">{{poruka.sadrzaj}}</textarea>
       <h2 class="korisnikova-poruka-korisnik">{{poruka.odKorisnika}}</h2>
@@ -13,5 +14,26 @@
 <div id="slanje-poruke">
   <textarea class="form-text" id="poruka-input"></textarea>
   <button (click)="posaljiPoruku()" [disabled]="signalR.konekcija.state != HubConnectionState.Connected" class="btn btn-primary" id="posalji-poruku">Pošalji</button>
+</div>
+</div>
+
+<div *ngIf="signalR.privatniChatOtvoren">
+  <div  id="priv-poruke-canvas">
+    <div *ngFor="let poruka of signalR.privatnePoruke" id="priv-poruke">
+      <div *ngIf="signalR.korisnickoIme == poruka.odKorisnika" class="korisnikova-poruka">
+        <textarea readonly class="p-text korisnikova-poruka-text">{{poruka.sadrzaj}}</textarea>
+        <h2 class="korisnikova-poruka-korisnik">{{poruka.odKorisnika}}</h2>
+      </div>
+      <div *ngIf="signalR.korisnickoIme != poruka.odKorisnika" class="poruka">
+        <h2 class="p-text poruka-korisnik">{{poruka.odKorisnika}}</h2>
+        <textarea readonly class="poruka-text">{{poruka.sadrzaj}}</textarea>
+      </div>
+    </div>
+  </div>
+  <div id="priv-slanje-poruke">
+    <textarea class="form-text" id="priv-poruka-input"></textarea>
+    <button (click)="posaljiPoruku()" [disabled]="signalR.konekcija.state != HubConnectionState.Connected || signalR.imeGrupe == ''" class="btn btn-primary" id="priv-posalji-poruku">Pošalji</button>
+  </div>
+
 </div>
 

@@ -6,12 +6,12 @@
   <div *ngIf="Alert.alert.aktivan" id="alert" class="alert alert-{{Alert.alert.tip}}">
     {{Alert.alert.sadrzaj}}
   </div>
-  <div *ngIf="privatniChatOtvoren" autofocus class="modal" tabindex="-1" role="dialog">
+  <div *ngIf="signalR.privatniChatOtvoren" autofocus class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">{{dialogTitle}}</h5>
-          <button (click)="privatniChatOtvoren = false" type="button" class="close">
+          <h5 class="modal-title">{{signalR.dialogTitle}}</h5>
+          <button (click)="signalR.zavrsiPrivatniChat(signalR.konekcijaIdPrivatnog)" type="button" class="close">
           </button>
         </div>
         <div class="modal-body">
@@ -32,13 +32,14 @@
     <div *ngFor="let korisnik of aktivniKorisnici" class="aktivni-korisnici">
       <div class="korisnik">
         <h2>{{korisnik.korisnickoIme}}</h2>
-        <button (click)="zapocniPrivatniChat(korisnik.konekcijaId)" class="btn btn-primary">Privatna poruka</button>
+        <button *ngIf="signalR.konekcijaIdPrivatnog != korisnik.konekcijaId" (click)="signalR.zapocniPrivatniChat(korisnik.korisnickoIme, korisnik.konekcijaId)" class="btn btn-primary">Privatna poruka</button>
+        <button *ngIf="signalR.konekcijaIdPrivatnog == korisnik.konekcijaId" (click)="otvoriPrivatniChat(korisnik.korisnickoIme, korisnik.konekcijaId)" class="btn btn-info">Otvori poruku</button>
       </div>
     </div>
 
   </div>
   <div id="center-screen">
-    <app-poruke></app-poruke>
+    <app-poruke *ngIf="!signalR.privatniChatOtvoren"></app-poruke>
   </div>
 </div>
 

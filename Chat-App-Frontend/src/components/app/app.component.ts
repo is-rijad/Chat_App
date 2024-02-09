@@ -1,16 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {Konstante} from "../../helperi/konstante";
 import {PorukeComponent} from "../poruke/poruke.component";
 import {FormsModule} from "@angular/forms";
 import {SignalR} from "../../servisi/signalr";
-import {Poruka} from "../../modeli/privatna-poruka";
 import {NgForOf, NgIf} from "@angular/common";
 import {Alert, TipAlerta} from "../../helperi/alert";
 import {GetAktivneKorisnike} from "../../endpoints/getAktivneKorisnike";
 import {HttpClientModule} from "@angular/common/http";
 import {Korisnik} from "../../modeli/korisnik";
 import {HubConnectionState} from "@microsoft/signalr";
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
   selector: 'app-root',
@@ -23,28 +23,22 @@ import {HubConnectionState} from "@microsoft/signalr";
   ]
 })
 export class AppComponent implements OnInit{
+  protected readonly Alert = Alert;
+
+
   aktivniKorisnici : Korisnik[] = [];
   hamburgerOtvoren = false;
-  privatniChatOtvoren = false;
-  dialogTitle = "";
   constructor(protected signalR:SignalR,
               private getAktivneKorisnike:GetAktivneKorisnike) {
-    this.signalR.konekcija.on(Konstante.korisnikSePridruzio,  (korisnik: Korisnik, poruka: Poruka) => {
+    this.signalR.konekcija.on(Konstante.korisnikSePridruzio,  (korisnik: Korisnik, poruka: string) => {
       this.aktivniKorisnici.push(korisnik);
-        Alert.alert = new Alert(TipAlerta.success, poruka.sadrzaj);
+        Alert.alert = new Alert(TipAlerta.success, poruka);
     });
-    this.signalR.konekcija.on(Konstante.korisnikSeOdjavio,  (korisnik: Korisnik, poruka: Poruka) => {
-      if (this.privatniChatOtvoren &&
-        (this.dialogTitle == korisnik.korisnickoIme || this.dialogTitle == Konstante.zapoceliSteRazgovorSa + korisnik.korisnickoIme)) {
-        this.privatniChatOtvoren = false;
-      }
+    this.signalR.konekcija.on(Konstante.korisnikSeOdjavio,  (korisnik: Korisnik, poruka: string) => {
       let index = this.aktivniKorisnici.findIndex(() => korisnik);
         this.aktivniKorisnici.splice(index, 1);
-        Alert.alert = new Alert(TipAlerta.success, poruka.sadrzaj);
+        Alert.alert = new Alert(TipAlerta.success, poruka);
     });
-    this.signalR.konekcija.on(Konstante.zapoceoPrivatniChat, (zapoceoKorisnik) =>  {
-      Alert.alert = new Alert(TipAlerta.success, `Korisnik ${zapoceoKorisnik} je započeo privatni chat sa Vama.`);
-    })
     this.signalR.konektujSe();
 
   }
@@ -57,7 +51,7 @@ export class AppComponent implements OnInit{
       this.signalR.konekcija.stop().then(() => {
         return true;
       })
-      return false;
+      return true;
     };
     this.getAktivneKorisnike.get().subscribe((res) => this.aktivniKorisnici = res);
   }
@@ -73,20 +67,11 @@ export class AppComponent implements OnInit{
     this.hamburgerOtvoren = !this.hamburgerOtvoren;
 
   }
-
-  zapocniPrivatniChat(konekcijaId : string) {
-    if (this.signalR.konekcija.state == HubConnectionState.Connected) {
-    this.signalR.konekcija.invoke(Konstante.zapocniPrivatniChat, konekcijaId).then((saKorisnikom : string) => {
-      this.dialogTitle = Konstante.zapoceliSteRazgovorSa + saKorisnikom;
-      this.privatniChatOtvoren = true;
-      setTimeout(() => {this.dialogTitle = saKorisnikom}, 3000);
-    }).catch((err) => {
-      Alert.alert = new Alert(TipAlerta.error, err);
+  async otvoriPrivatniChat(korisnickoIme: string, konekcijaId: string) {
+    let proslaKonekcija = this.signalR.konekcijaIdPrivatnog;
+    await this.signalR.zapocniPrivatniChat(korisnickoIme, konekcijaId).then(() => {
+      if(proslaKonekcija == "")
+        this.signalR.privatnePoruke = []
     });
-    }
-    else {
-      Alert.alert = new Alert(TipAlerta.error, "Niste konektovani!");
-    }
   }
-  protected readonly Alert = Alert;
 }

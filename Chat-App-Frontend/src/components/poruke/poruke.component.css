@@ -18,22 +18,22 @@
   padding: 5px;
 
 }
-#poruke-canvas {
+#poruke-canvas, #priv-poruke-canvas {
   height: 75vh;
   overflow-y: scroll;
 }
-#slanje-poruke {
+#slanje-poruke, #priv-slanje-poruke {
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-radius: 20px;
 }
-#poruka-input {
+#poruka-input, #priv-poruka-input {
   width: 78%;
   height: 10vh;
   resize: none;
 }
-#posalji-poruku {
+#posalji-poruku, #priv-posalji-poruku {
   width: 20%;
 }
 @media only screen and (max-width: 1016px) {
