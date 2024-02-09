@@ -5,4 +5,7 @@ export class Konstante {
   public static readonly primiPoruku = "PrimiPoruku";
   public static readonly korisnikSePridruzio = "KorisnikSePridruzio";
   public static readonly korisnikSeOdjavio = "KorisnikSeOdjavio";
+  public static readonly zapoceoPrivatniChat = "ZapoceoPrivatniChat";
+  public static readonly zapocniPrivatniChat = "ZapocniPrivatniChat";
+  public static readonly zapoceliSteRazgovorSa = "`Započeli ste privatni chat sa korisnikom ";
 }

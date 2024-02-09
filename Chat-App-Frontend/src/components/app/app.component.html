@@ -6,6 +6,20 @@
   <div *ngIf="Alert.alert.aktivan" id="alert" class="alert alert-{{Alert.alert.tip}}">
     {{Alert.alert.sadrzaj}}
   </div>
+  <div *ngIf="privatniChatOtvoren" autofocus class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{dialogTitle}}</h5>
+          <button (click)="privatniChatOtvoren = false" type="button" class="close">
+          </button>
+        </div>
+        <div class="modal-body">
+          <app-poruke></app-poruke>
+        </div>
+      </div>
+    </div>
+  </div>
   <div id="sidebar">
     <div (click)="hamburgerHandler()" id="hamburger"><img src="/assets/HamburgerIcon.png" alt="HamburgerIcon"></div>
     <h3>Aktivni korisnici</h3>
@@ -17,8 +31,8 @@
     </div>
     <div *ngFor="let korisnik of aktivniKorisnici" class="aktivni-korisnici">
       <div class="korisnik">
-        <h2>{{korisnik}}</h2>
-        <button class="btn btn-primary">Privatna poruka</button>
+        <h2>{{korisnik.korisnickoIme}}</h2>
+        <button (click)="zapocniPrivatniChat(korisnik.konekcijaId)" class="btn btn-primary">Privatna poruka</button>
       </div>
     </div>
 
