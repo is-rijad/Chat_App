@@ -1,43 +1,68 @@
-.poruka, .korisnikova-poruka{
+.poruka, .korisnikova-poruka, .priv-poruka, .priv-korisnikova-poruka {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 2%;
 }
-.poruka-korisnik, .korisnikova-poruka-korisnik {
-  width:20%;
-}
-.korisnikova-poruka-korisnik {
-  text-align: right;
-}
-.poruka-text, .korisnikova-poruka-text {
-  width: 80%;
-  height: 10vh;
+
+.priv-poruka-text, .priv-korisnikova-poruka-text {
+  width: 75%;
   resize: none;
   border-radius: 10px;
   padding: 5px;
-
 }
+.priv-poruka-korisnik, .priv-korisnikova-poruka-korisnik {
+  width: 20%;
+}
+
+.poruka-korisnik, .korisnikova-poruka-korisnik {
+  width: 20%;
+}
+
+.korisnikova-poruka-korisnik {
+  text-align: right;
+}
+
+.poruka-text, .korisnikova-poruka-text {
+  width: 80%;
+  resize: none;
+  border-radius: 10px;
+  padding: 5px;
+}
+
 #poruke-canvas, #priv-poruke-canvas {
-  height: 75vh;
+  height: 80vh;
   overflow-y: scroll;
 }
+
 #slanje-poruke, #priv-slanje-poruke {
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-radius: 20px;
 }
+
 #poruka-input, #priv-poruka-input {
   width: 78%;
-  height: 10vh;
+  height: 8vh;
   resize: none;
 }
+
 #posalji-poruku, #priv-posalji-poruku {
   width: 20%;
 }
-@media only screen and (max-width: 1016px) {
+@media only screen and (max-width: 600px) {
+  #poruke-canvas, #priv-poruke-canvas {
+    height: 75vh;
+    overflow-y: scroll;
+  }
+}
+@media only screen and (min-width: 601px) and (max-width: 980px) {
   .poruka-text, .korisnikova-poruka-text {
     width: 70%;
+  }
+  #poruke-canvas, #priv-poruke-canvas {
+    height: 80vh;
+    overflow-y: scroll;
   }
 }

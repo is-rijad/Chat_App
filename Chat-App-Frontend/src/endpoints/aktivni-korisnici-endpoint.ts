@@ -5,9 +5,10 @@ import {Korisnik} from "../modeli/korisnik";
 
 @Injectable()
 export class AktivniKorisniciEndpoint {
-    constructor(private httpClient:HttpClient) {
-    }
-    get() {
-        return this.httpClient.get<Korisnik[]>(Konstante.adresaServera + "/GetAktivneKorisnike");
-    }
+  constructor(private httpClient: HttpClient) {
+  }
+
+  get() {
+    return this.httpClient.get<Korisnik[]>(Konstante.adresaServera + "/GetAktivneKorisnike");
+  }
 }

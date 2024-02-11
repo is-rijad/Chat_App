@@ -1,19 +1,22 @@
 body {
   padding: 0 0.5% 0 0.5%;
 }
+
 .modal-dialog {
   margin: 0 auto 0 auto;
-  width: 70vw;
   height: 100vh;
   overflow: hidden;
 }
+
 .modal {
   display: block;
 }
+
 .modal-content {
   height: 100vh;
   overflow-y: scroll;
 }
+
 header {
   width: 100%;
   height: 10vh;
@@ -22,33 +25,46 @@ header {
   justify-content: center;
   border-radius: 5px;
   background-color: #3640ea;
+  position: sticky;
 }
+
 header h6 {
   font-size: xxx-large;
   font-weight: bolder;
   font-family: "Arial Rounded MT Bold";
   color: #9b9a9a;
 }
+header img {
+  display: none;
+  left: 1px;
+  top:10px;
+  width: 20px;
+}
+
 #sidebar h3 {
   display: block;
 }
+
 #sidebar {
   width: 30%;
   background-color: #0074c7;
   padding: 1%;
   overflow: scroll;
 }
+
 #center-screen {
   width: 70%;
   background-color: #9b9a9a;
   padding: 1%;
 }
+
 #wrapper {
   display: flex;
   width: 100%;
   height: 90vh;
   justify-content: start;
 }
+
 .korisnik {
   display: flex;
   justify-content: space-between;
@@ -57,10 +73,12 @@ header h6 {
   padding: 3%;
   margin-bottom: 2%;
 }
+
 #hamburger {
   display: none;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
+
 #alert {
   width: 20%;
   position: absolute;
@@ -69,28 +87,44 @@ header h6 {
 }
 
 @media only screen and (max-width: 600px) {
+  header img {
+    display: block;
+  }
+  body {
+    overflow-y: hidden;
+  }
+
   #alert {
     width: 80%;
     left: 10%;
   }
+
   #hamburger {
     display: block;
     cursor: pointer;
     width: 30px;
     height: 30px;
   }
+
   #sidebar {
     width: 100vw;
     max-height: 60px;
+    overflow-y: hidden;
   }
+
   #wrapper {
     flex-wrap: wrap;
   }
+
   #center-screen {
     width: 100vw;
   }
 }
-@media only screen and (max-height: 980px) {
+
+@media only screen and (max-width: 980px) {
+  body {
+    overflow-y: hidden;
+  }
   .korisnik {
     flex-wrap: wrap;
   }

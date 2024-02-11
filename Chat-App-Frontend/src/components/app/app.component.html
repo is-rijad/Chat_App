@@ -1,6 +1,7 @@
 <body>
 <header>
   <h6>Chat App</h6>
+  <img (click)="scrollToTop()" id="scroll-to-top" title="Scroll to top" src="assets/ScrollToTopArrow.png" alt="Scroll to top">
 </header>
 <div id="wrapper">
   <div *ngIf="Alert.alert.aktivan" id="alert" class="alert alert-{{Alert.alert.tip}}">
@@ -24,16 +25,22 @@
     <div (click)="hamburgerHandler()" id="hamburger"><img src="/assets/HamburgerIcon.png" alt="HamburgerIcon"></div>
     <h3>Aktivni korisnici</h3>
     <div class="aktivni-korisnici">
-      <div  class="korisnik">
+      <div class="korisnik">
         <h2>{{signalR.korisnickoIme}}</h2>
         <h2>(Vi)</h2>
       </div>
     </div>
-    <div *ngFor="let korisnik of aktivniKorisnici" class="aktivni-korisnici">
+    <div *ngFor="let korisnik of signalR.aktivniKorisnici" class="aktivni-korisnici">
       <div class="korisnik">
         <h2>{{korisnik.korisnickoIme}}</h2>
-        <button *ngIf="signalR.konekcijaIdPrivatnog != korisnik.konekcijaId" (click)="signalR.zapocniPrivatniChat(korisnik.korisnickoIme, korisnik.konekcijaId)" class="btn btn-primary">Privatna poruka</button>
-        <button *ngIf="signalR.konekcijaIdPrivatnog == korisnik.konekcijaId" (click)="otvoriPrivatniChat(korisnik.korisnickoIme, korisnik.konekcijaId)" class="btn btn-info">Otvori poruku</button>
+        <button *ngIf="signalR.konekcijaIdPrivatnog != korisnik.konekcijaId"
+                (click)="signalR.zapocniPrivatniChat(korisnik.korisnickoIme, korisnik.konekcijaId)"
+                class="btn btn-primary">Privatna poruka
+        </button>
+        <button *ngIf="signalR.konekcijaIdPrivatnog == korisnik.konekcijaId"
+                (click)="otvoriPrivatniChat(korisnik.korisnickoIme, korisnik.konekcijaId)" class="btn btn-info">Otvori
+          poruku
+        </button>
       </div>
     </div>
 

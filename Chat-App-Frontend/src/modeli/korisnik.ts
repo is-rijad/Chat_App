@@ -1,4 +1,4 @@
 export interface Korisnik {
-  konekcijaId : string;
-  korisnickoIme : string;
+  konekcijaId: string;
+  korisnickoIme: string;
 }

@@ -17,11 +17,7 @@ namespace Chat_App_Backend.Endpointi {
         [HttpPost]
         public async Task DodajPoruku([FromBody] Poruka poruka)
         {
-            await _dataContext.Poruke.AddAsync(new Poruka()
-            {
-                OdKorisnika = poruka.OdKorisnika,
-                Sadrzaj = poruka.Sadrzaj
-            });
+            await _dataContext.Poruke.AddAsync(poruka);
             await _dataContext.SaveChangesAsync();
         }
         [HttpGet]
